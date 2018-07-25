@@ -1,3 +1,4 @@
+```
 # devops
 Step 1.
 # RedHat like systems
@@ -23,7 +24,7 @@ go to path -> \home\<user>\.aws
 Step 3: Installing kubectl binanry -> refer net for the same
 Step 4: Installing kops binary -> refer net
 Step 5: Installing tereform
-```
+
 Step 6:
 ==============================================================
 #!/bin/bash
@@ -59,6 +60,23 @@ You can create this key pair files
 `ssh-keygen -f ~/.ssh/udemy_devopsinuse`
 --ssh-public-key=~/.ssh/udemy_devopsinuse.pub
 ==============================================================
+
+Step:7
+kops validate cluster 
+
+Step 8
+--> kubectl get nodes
+
+Step 9:
+//Create deployment
+kubectl create deployment my-nginx-deployment image=nginx 
+
+// How to expose deployment via service
+kubectl expose deployment my-nginx-deployment --port=80 --type=NodePort --name=my-nginx-service
+
+kubectl get pods
+kubectl get svc
+
 ```
 
 https://github.com/kubernetes/kops/blob/master/docs/aws.md 
