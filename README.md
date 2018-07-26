@@ -77,6 +77,78 @@ kubectl expose deployment my-nginx-deployment --port=80 --type=NodePort --name=m
 kubectl get pods
 kubectl get svc
 
+
+
+
+kubectl get pod,svc
+kubectl edit service <<service_name>>
+
+kubectl create configmap <<config_map_name>> --from-file=/<path>/<to>/<some>/<location>/data
+
+//to get config maps
+kubectl get cm 
+
+kubectl describer cm <<config_map_name>>
+
+kubectl create -f <filename>.yaml 
+kubectl apply -f deployment_file.yaml
+
+kubectl logs nginx-deployment-object -f 
+
+kubectl exec -it nginx-deployment-object --bash
+
+kubectl get deploy,pod,svc,cm
+
+kubectl delete pod <<pode>>
+
+kubectl create -f pod-helloword.ym
+
+kubectl describe pod helloworld.com
+
+//rc - replication controller (old version)
+kubectl scale --replicas=4 -f helloworld-controller.yml (file based)
+kubectl get rc
+kubectl scale --replicas=4 -f rc/helloworld-controller (name based)
+kubectl delete rc/helloworld-controller
+
+//Replication Set -> Advance version 
+
+//Deployments -> Great version
+kubectl create -f deployment/helloworld.yml
+kubectl get deployments
+kubectl get rs
+kubectl get pods
+kubectl get pods --show-labels
+kubectl rolout status deployment/helloworld-deployments
+kubectl expose deployment helloworld-deployment --type=NodePort (Service Creation)
+kubectl set image deployment/helloworld-deployment k8s-demo=ggarg/k8s-demo:2
+kubectl rollout status deployment/helloworld-deployment
+kubectl get pods
+
+kubectl rollout undo deployment/helloworld-deployment
+
+kubectl rollout undo deployment/helloworld-deployment --to-revision=3
+
+kubectl edit deployment/helloworld-deployment
+
+kubectl rollout undo deployment/helloworld-deployment --to-revision=3
+
+kubectl edit deployment/helloworld-deployment
+
+kubectl label nodes node1 hardware=high-spec
+kubectl label nodes node2 hardware=low-spec
+kubectl get nodes --show-labels
+
+//build docker file based on Dockerfile
+docker build . 
+docker build -t your-login/docker-demo . 
+
+
+//pushing the image to docker hub for example my login-id is -> ggarg so that means -> ggarg/docker-1
+docker login
+docker tag imageid your-login/docker-demo
+docker push your-login/docker-demo
+
 ```
 
 https://github.com/kubernetes/kops/blob/master/docs/aws.md 
