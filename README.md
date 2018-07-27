@@ -209,9 +209,10 @@ kubectl run curl --image=radial/busyboxplus:curl -i --tty
   737  kops validate cluster
   738  kubectl get pods
 
-
-
-
+kubectl set image deployment/bank-deployment bank-app=ggarg/bank:v2
+kubectl rollout status deployment/bank-deployment
+kubectl rollout undo deployment/bank-deployment
+kops delete cluster --name kops2.itseasy.k8s.local --yes
 
 ```
 
