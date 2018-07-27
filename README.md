@@ -214,6 +214,9 @@ kubectl rollout status deployment/bank-deployment
 kubectl rollout undo deployment/bank-deployment
 kops delete cluster --name kops2.itseasy.k8s.local --yes
 
+//Ingress 
+kubectl get ing 
+
 ```
 
 https://github.com/kubernetes/kops/blob/master/docs/aws.md 
