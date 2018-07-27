@@ -159,6 +159,40 @@ EXPOSE 9100
 ENTRYPOINT ["java","-jar","restful-bank-loyalty-0.0.1-SNAPSHOT.jar"]
 
 
+Loyalty.yml
+--
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: loyalty-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: loyalty-app
+    spec:
+      containers:
+      - name: loyalty-app
+        image: ggarg/loyalty
+        ports:
+        - name: nodejs-port
+          containerPort: 9100
+--
+apiVersion: v1
+kind: Service
+metadata:
+  name: loyalty-svc
+spec:
+  ports:
+  - port: 31001
+  	nodePort:31001
+  	targetPort:nodejs-port
+    protocol: TCP
+  selector:
+    app: loyalty-app
+  type: NodePort
+          
 
 
 ```
