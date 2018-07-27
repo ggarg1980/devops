@@ -149,6 +149,18 @@ docker login
 docker tag imageid your-login/docker-demo
 docker push your-login/docker-demo
 
+//build
+sudo docker build -t ggarg/loyalty:v1 .
+
+//DOCKER FILE
+FROM openjdk:8-jdk-alpine
+COPY ./target/restful-web-bank-0.0.1-SNAPSHOT.jar restful-web-bank-0.0.1-SNAPSHOT.jar
+EXPOSE 9100
+ENTRYPOINT ["java","-jar","restful-bank-loyalty-0.0.1-SNAPSHOT.jar"]
+
+
+
+
 ```
 
 https://github.com/kubernetes/kops/blob/master/docs/aws.md 
