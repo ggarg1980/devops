@@ -192,7 +192,25 @@ spec:
   selector:
     app: loyalty-app
   type: NodePort
-          
+  
+  
+kubectl get pods -o wide
+kubectl exec loyalty-deployment-78b4f754ff-jsbgm -- printenv | grep SERVICE
+kubectl get services kube-dns --namespace=kube-system
+kubectl run curl --image=radial/busyboxplus:curl -i --tty
+
+730  sudo docker build -t ggarg/bank:v1 .
+  731  sudo docker push ggarg/bank:v1
+  732  sudo docker build -t ggarg/bank:v1 .
+  733  mvn clean  package
+  734  sudo docker build -t ggarg/bank:v1 .
+  735  sudo docker push ggarg/bank:v1
+  736  kops create cluster --name=kops2.itseasy.k8s.local --state=s3://kops-state-ggarg --authorization RBAC --zones=ap-south-1a --node-count=2 --node-size=t2.micro --master-size=t2.micro --master-count=1 --dns-zone=kops2.itseasy.k8s.local --ssh-public-key=~/.ssh/id_rsakey.pub --yes
+  737  kops validate cluster
+  738  kubectl get pods
+
+
+
 
 
 ```
