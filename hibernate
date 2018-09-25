@@ -114,8 +114,9 @@ Using the Hibernate API
 2. Create a session from session factory
 3. Use that session to save model objects
 
-Step 1. #######
-@Entity (name="user_name") //------> This class needs to be treated as entity and needs to be persisted
+Step 1. ###############################################################
+@Entity //------> This class needs to be treated as entity and needs to be persisted
+@Table (name="user_name") //-> Name of the table
 public class UserDetails
 {         
          @Id //------> This key is treated as primary key
@@ -126,12 +127,22 @@ public class UserDetails
          @column(name="user_name")
          private String userName;
          //Getter and setters
+         
+         @Transient //------> This will tell hibernate not to persist it
+         private String noToBeSaved;
+         
+         @Temporal(TemporalType.DATE) //------> @Temporal(TemporalType.TIME) && @Temporal(TemporalType.TIMESTAMP)
+         private Date joiningDate;
+         
+         @Lob //---> This means Clob and its length is not set
+         private String desciption;
 }
 Step 2. #######
 This is the model class so this needs to be defined in the hibernate.cfg.xml as 
           <mapping class="com.gg.kk.UserDetails"/>
           
 Step 3. #######
+          //SAVE THE DATA IN THE DATABASE
           
             UserDetails user = new UserDetails();
             user.setId();
@@ -142,8 +153,73 @@ Step 3. #######
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(user);
-            session.getTransaction.commit();
+            session.close(); //This should be in finally block
             ...
             ...
             
+            //RETREIVING THE DATA IN THE DATABASE
+            user = null;
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            user = (UserDetails) session.get(UserDetails.class,1); //First parameter is class and 2nd paramater is unique Id
+            user.getListOfAddress(); //THIS IS ANOTHER EMBEDDED OBJECT - AND AT THIS TIME ALL THE DATA IS BEING QUERIED
             
+  FETCH STATERGY (LAZY initaztion -> Get only first level data and EAGER intization -> Get all the data in single go)
+  You are returned a proxy object 
+  ################################################# ONE TO ONE MAPPING #################################################
+  @Entity
+  public class Vehicle
+  {
+          @Id @GeneratedValue
+          private int vehicleNo;
+          private String vehicleName;
+          
+          //Getter and Setters
+  }
+
+  @Entity
+  public class UserDetails
+  {
+         @Id //------> This key is treated as primary key
+         @GeneratedValue
+         @column(name="user_id")
+         private int userId;
+         
+         @column(name="user_name")
+         private String userName;
+         
+         @OneToOne ################################################# Vehicle ref is present user table
+         @JoinColumn(name="VEHICLE_ID") ######################## NAME OF THE JOIN COLOUMN
+         private Vehicle vehicle;
+         
+  }
+
+################################################# ONE TO MANY MAPPING #################################################
+  
+  @Entity
+  public class Vehicle
+  {
+          @Id @GeneratedValue
+          private int vehicleNo;
+          private String vehicleName;
+          
+          //Getter and Setters
+  }
+
+  @Entity
+  public class UserDetails
+  {
+         @Id //------> This key is treated as primary key
+         @GeneratedValue
+         @column(name="user_id")
+         private int userId;
+         
+         @column(name="user_name")
+         private String userName;
+         
+         @OneToMany ################################################# Vehicle ref is present user table
+         @JoinColumn(name="VEHICLE_ID") ######################## NAME OF THE JOIN COLOUMN
+         private Collection<Vehicle> vehicle = new ArrayList<>(); ###################### HERE IT IT COLLECTION 
+         
+  }
+  
