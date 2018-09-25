@@ -1,0 +1,110 @@
+'''
+HQL - Hibernate Query Language - This is used for SELECTING DATA as well UPDATING/DELTEING DATA
+          1. To perform bulk operations
+          2. It is independent of DB
+          3. Here we use Class names and properties
+
+Example
+    SQL:- Select * from product; -> product is tablename
+    HQL:- from Product p; -> Product is classname
+    
+    SQL:- select pid, pname from product -> table and coloumn names 
+    HQL:- select p.productId, p.productName from Product p; -> Product is classname and productId, productName are properties
+
+HQL:- 
+      1. Selecting total object (all coloumns)
+      2. Selecting partial object (more than one coloumn)
+      3. Selecting only single coloumn 
+
+
+==================================Selecting total object (all coloumns)==================================
+      String hql = " from Customer cust";
+      Query query = session.createQuery(hql);
+      List list = query.list();
+      Iterator itr = list.iterator();
+      while(its.hasNext())
+      {
+          Customer cust = (Customer) its.next();
+          //cust.getCustName();
+          //cust.getCustNo();
+          //cust.getCustAddress();
+      }
+==================================Selecting partial object (more than one coloumn)==================================
+      String hql = "select cust.custName, cust.custNo from Customer cust"; //Only two attributes are selected
+      Query query = session.createQuery(hql);
+      List list = query.list();
+      Iterator itr = list.iterator();
+      while(its.hasNext())
+      {
+          Object[] custObjArr = (Object[]) its.next();
+          //custObjArr[0] -> stores custName
+          //custObjArr[1] -> stores custNo
+      }
+==================================Selecting only single coloumn==================================
+      String hql = "select cust.custName from Customer cust"; //Only one attribute is required
+      Query query = session.createQuery(hql);
+      List list = query.list();
+      Iterator itr = list.iterator();
+      while(its.hasNext())
+      {
+          String custName = (String) its.next();
+      }
+======================================================================================================
+Passing runtime values
+        1. Label
+                        String hql = "select cust.custName from Customer cust where cust.custNo=:no"; //:no is Label
+                        Query query = session.createQuery(hql);
+                        query.setParameter("no",200);
+                        List list = query.list();
+        2. Question Mark
+                        String hql = "select cust.custName from Customer cust where cust.custNo=?"; //
+                        Query query = session.createQuery(hql);
+                        query.setParameter(0,200);
+                        List list = query.list(); // LIST IS FOR QUERY DATA
+
+                        //DELETE Example
+                        String hql = "delete from Customer cust where cust.custNo=?"; //
+                        Query query = session.createQuery(hql);
+                        query.setParameter(0,200);
+                        int recordsDeleted = query.executeUpdate(); //executeUpdate for UPDATING/DELETEING DATA
+
+====================================================CRITERIA API==================================================
+THIS IS ONLY USED FOR DATA RETRIEVEL
+  1. FULL DATA CAN BE RETRIEVED
+  2. PARTIAL DATA CAN BE RETRIEVED WITH PROJECTIONS
+            ====================================================FULL OBJECT=======================================
+            Criteria ctr = session.createCriteria(Customer.class);
+            Criterion c1 = Restrictions.gt("custNo",100); // Print records greaterThan 100
+
+            ctr.add(c1);
+
+            List list = ctr.list();
+            Iterator itr = list.iterator();
+            while(its.hasNext())
+            {
+                Customer cust = (Customer) its.next();
+                //cust.getCustName();
+                //cust.getCustNo();
+                //cust.getCustAddress();
+            }
+            ====================================================PARTIAL OBJECT=======================================
+            USE PROJECTIONS WITH CRITERIA
+            
+            ProjectionList plist = Projection.projectionList();
+            plist.add(Projections.property("custName")); // PROJECTIONS ARE SET
+            plist.add(Projections.property("custNo")); // PROJECTIONS ARE SET
+              
+            Criteria ctr = session.createCriteria(Customer.class);
+            ctr.setProjections(plist); // PROJECTIONS ARE SET
+            Criterion c1 = Restrictions.gt("custNo",100); // Print records greaterThan 100
+
+            ctr.add(c1);
+
+            List list = ctr.list();
+            Iterator itr = list.iterator();
+            while(its.hasNext())
+            {
+                    Object[] custObjArr = (Object[]) its.next();
+                    //custObjArr[0] -> stores custName
+                    //custObjArr[1] -> stores custNo
+            }
