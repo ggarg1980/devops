@@ -108,3 +108,42 @@ THIS IS ONLY USED FOR DATA RETRIEVEL
                     //custObjArr[0] -> stores custName
                     //custObjArr[1] -> stores custNo
             }
+==================================================================================================================================
+Using the Hibernate API
+1. Create a session factory
+2. Create a session from session factory
+3. Use that session to save model objects
+
+Step 1. #######
+@Entity (name="user_name") //------> This class needs to be treated as entity and needs to be persisted
+public class UserDetails
+{         
+         @Id //------> This key is treated as primary key
+         @GeneratedValue
+         @column(name="user_id")
+         private int userId;
+         
+         @column(name="user_name")
+         private String userName;
+         //Getter and setters
+}
+Step 2. #######
+This is the model class so this needs to be defined in the hibernate.cfg.xml as 
+          <mapping class="com.gg.kk.UserDetails"/>
+          
+Step 3. #######
+          
+            UserDetails user = new UserDetails();
+            user.setId();
+             ...
+             ...
+            
+            SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction.commit();
+            ...
+            ...
+            
+            
