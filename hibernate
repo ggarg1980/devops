@@ -203,6 +203,10 @@ Step 3. #######
           private int vehicleNo;
           private String vehicleName;
           
+          @ManyToOne
+          @JoinColumn(name="USER_ID");
+          private UserDetails user;
+          
           //Getter and Setters
   }
 
@@ -217,9 +221,40 @@ Step 3. #######
          @column(name="user_name")
          private String userName;
          
-         @OneToMany ################################################# Vehicle ref is present user table
-         @JoinColumn(name="VEHICLE_ID") ######################## NAME OF THE JOIN COLOUMN
+         @OneToMany(mappedBy="user") 
          private Collection<Vehicle> vehicle = new ArrayList<>(); ###################### HERE IT IT COLLECTION 
          
   }
   
+
+################################################# MANY TO MANY MAPPING #################################################
+  
+  @Entity
+  public class Vehicle
+  {
+          @Id @GeneratedValue
+          private int vehicleNo;
+          private String vehicleName;
+          @ManyToMany(mappedBy="vehicle")
+          private Collection<UserDetails> userList = new ArrayList<>(); ###################### HERE IT IT COLLECTION 
+          
+          //Getter and Setters
+  }
+
+  @Entity
+  public class UserDetails
+  {
+         @Id //------> This key is treated as primary key
+         @GeneratedValue
+         @column(name="user_id")
+         private int userId;
+         
+         @column(name="user_name")
+         private String userName;
+         
+         @ManyToMany(cascade=CascadeType.ALL)
+         @JoinTable(name ="USER_Vehicle", joinColums = {@JoinColumn = {name ="USER_ID")},
+                                         inverseJoinColums = {@JoinColumn = {name ="VEHICLE_ID")})
+         private Collection<Vehicle> vehicle = new ArrayList<>(); ###################### HERE IT IT COLLECTION 
+         
+  }
